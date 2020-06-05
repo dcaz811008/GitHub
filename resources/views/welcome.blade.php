@@ -1,3 +1,5 @@
+@extends('layout')
+
 <!DOCTYPE html>
 
 <head>
