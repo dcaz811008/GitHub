@@ -19,6 +19,7 @@ class NeedLogin
         // var_dump($request->route()->getPrefix());
 
         // return $next($request);
+        dd($request->session()->get('admLogin'));
 
         # 取得 route prefix 來選擇要判斷的 SESSION
         $routePrefix = $request->route()->getPrefix();

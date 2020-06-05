@@ -81,11 +81,9 @@ class UserController extends AdmController
 
             # 登入資訊 寫入 session
             $request->session()->put('admLogin', $admLogin);
-            // var_dump("TEST");
-            // var_dump($request->session()->exists('admLogin'));
-            // var_dump($request->session());
-            // die;
-
+            // dd($request->session()->get('admLogin'));
+            // var_dump($admLogin);
+            // dd($admLogin);
             # 登入結果
             return redirect(action('Adm\UserController@index'));
         }
