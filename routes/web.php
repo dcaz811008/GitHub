@@ -15,6 +15,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// 左右移動
+Route::get('/test', function () {
+    return view('test');
+});
+// 左右移動
+Route::get('/test2', function () {
+    return view('test2');
+});
+
+
 Route::get('/home', function () {
     return view('/site/layouts/home');
 });

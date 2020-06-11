@@ -16,10 +16,6 @@ class NeedLogin
      */
     public function handle($request, Closure $next)
     {
-        // var_dump($request->route()->getPrefix());
-
-        // return $next($request);
-
         # 取得 route prefix 來選擇要判斷的 SESSION
         $routePrefix = $request->route()->getPrefix();
 
