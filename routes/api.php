@@ -21,6 +21,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/area', 'Api\InfoController@getArea');
 // 全家soap訂單建立
 Route::get('/Fami', 'Api\InfoController@getFami');
+// aftee
+Route::get('/aftee', 'Api\InfoController@getAftee');
+// aftee
+Route::get('/aftee2', 'Api\TestController@getAftee');
 // 取得三段式條碼
 Route::get('/barcode', 'Api\InfoController@getBarcode');
 // 轉成圖檔

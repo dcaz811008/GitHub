@@ -1,96 +1,100 @@
-<html>
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<head>
-    <title></title>
-    <!--    匯入jQuery    -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="js/jquery.mousewheel.min.js"></script>
-    <script>
-        $(document).ready(function(){
-            var num_li=200
-            var pos = $(window).height() / 2
-            
-            //滾動滑鼠滾輪時，移動到上一頁、下一頁的效果
-            n=1
-            moving=0
-            $(window).mousewheel(function(e){
-                // $("html,body").stop()
-                // if(moving==0){
-                //     moving=1
-                //     if(e.deltaY==-1){
-                //         if(n<num_li){
-                //             n++
-                //         }
-                //     }else{
-                //         if(n>1){
-                //             n--
-                //         }
-                //     }
-                // }
-                // $("html,body").animate({"scrollTop":$(".p0"+n).offset().top},function(){moving=0})
-                // $('#cube').on('mousewheel', function(event) {
-                // if(moving==0){
-                //     moving=1
-                //     if(e.deltaY==-1){
-                //         if(n<num_li){
-                //             n++
-                //         }
-                //     }else{
-                //         if(n>1){
-                //             n--
-                //         }
-                //     }
-                // }
-                // console.log(n)
-                if(e.deltaY==-1){
-                    if(n<num_li){
-                        n++
-                    }
-                }else{
-                    if(n>1){
-                        n--
-                    }
-                }
+        <title>Laravel</title>
 
-                if(n==2){
-                    console.log(n)
-                    document.getElementById( "p01" ).style.backgroundImage = "url('https://placeimg.com/1000/1000/nature')";
-                }
-                // console.log(e.deltaY)
-            })
-        });
-    </script>
-    <style type="text/css">
-        /*    插入背景圖片    */
-        .p01 {
-            background-image: url(https://placeimg.com/1000/1000/animals);
-            background-size: cover;
-            background-repeat: no-repeat;
-            height: 100vh;
-        }
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
+        <!-- Styles -->
+        <style>
+            html, body {
+                background-color: #fff;
+                color: #636b6f;
+                font-family: 'Nunito', sans-serif;
+                font-weight: 200;
+                height: 100vh;
+                margin: 0;
+            }
 
-        .p02 {
-            /* background-image: url(images/p02.jpg); */
-            background-size: cover;
-            background-repeat: no-repeat;
-            height: 100vh;
-        }
-    </style>
-</head>
+            .full-height {
+                height: 100vh;
+            }
 
-<body>
-    <div class="container">
-        {{-- <div class="p01"></div> --}}
+            .flex-center {
+                align-items: center;
+                display: flex;
+                justify-content: center;
+            }
 
-        <div class="p01" id="p01"></div>
-        <div class="p02">
-            <img src=<?php echo env('APP_URL') . "/img/youtube.png"; ?> alt="youtube">
+            .position-ref {
+                position: relative;
+            }
+
+            .top-right {
+                position: absolute;
+                right: 10px;
+                top: 18px;
+            }
+
+            .content {
+                text-align: center;
+            }
+
+            .title {
+                font-size: 84px;
+            }
+
+            .links > a {
+                color: #636b6f;
+                padding: 0 25px;
+                font-size: 13px;
+                font-weight: 600;
+                letter-spacing: .1rem;
+                text-decoration: none;
+                text-transform: uppercase;
+            }
+
+            .m-b-md {
+                margin-bottom: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="flex-center position-ref full-height">
+            @if (Route::has('login'))
+                <div class="top-right links">
+                    @auth
+                        <a href="{{ url('/home') }}">Home</a>
+                    @else
+                        <a href="{{ route('login') }}">Login</a>
+
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}">Register</a>
+                        @endif
+                    @endauth
+                </div>
+            @endif
+
+            <div class="content">
+                <div class="title m-b-md">
+                    Laravel
+                </div>
+
+                <div class="links">
+                    <a href="https://laravel.com/docs">Docs</a>
+                    <a href="https://laracasts.com">Laracasts</a>
+                    <a href="https://laravel-news.com">News</a>
+                    <a href="https://blog.laravel.com">Blog</a>
+                    <a href="https://nova.laravel.com">Nova</a>
+                    <a href="https://forge.laravel.com">Forge</a>
+                    <a href="https://vapor.laravel.com">Vapor</a>
+                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                </div>
+            </div>
         </div>
-        {{-- <div class="p03"></div>
-        <div class="p04"></div>
-        <div class="p05"></div> --}}
-    </div>
-</body>
-
+    </body>
 </html>

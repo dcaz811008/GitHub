@@ -19,9 +19,19 @@ Route::get('/', function () {
 Route::get('/test', function () {
     return view('test');
 });
-// 左右移動
+// 上下移動
 Route::get('/test2', function () {
     return view('test2');
+});
+
+// 監聽移動
+Route::get('/test3', function () {
+    return view('test3');
+});
+
+// load
+Route::get('/test4', function () {
+    return view('test4');
 });
 
 

@@ -336,4 +336,159 @@ class InfoController extends Controller
         var_dump($query);
         // return $query;
     }
+
+    /** @test */
+    public function getAftee()
+    {
+
+        $data['itemInformationList'][0] = [
+            'shopItemId' => "P19122317", // 店舖商品ID: 必填
+            'itemName' => "【豪華車庫房 3h】銀星會員贈送0.5h", // 商品名稱: 必填
+            'itemPrice' => "1099", // 商品單價:必填
+            'itemCount' => "1", // 個數: 必填
+            'itemUrl' => "https://np-pay.be/items/012/" // 商品URL: 必填
+        ];
+
+        $data['orderApplicantInformation'] = [
+            'customerName' => "注⽂太郎", // 消費者姓名
+            'zipCode' => "108", //郵遞區號
+            'address' => "台北市信義區松智路1號11樓", // 地址
+            'email' => "np@netprotections.co.jp", // 電⼦郵件
+        ];
+
+        $data['orderSendInformation'] = [
+            'destCustomerName' => "銀座太郎", // 消費者姓名
+            'destZipCode' => "108", //郵遞區號
+            'destAddress' => "台北市信義區松智路1號11樓", // 地址
+            'destTel' => "09011111111", // 電話號碼
+        ];
+
+
+        // "shop_item_id" => "P19122317", // 店舖商品ID: 必填
+        // "item_name" => "【豪華車庫房 3h】銀星會員贈送0.5h", // 商品名稱: 必填
+        // "item_price" => 1099, // 商品單價:必填
+        // "item_count" => 1, // 個數: 必填
+        // "item_url" => "https://np-pay.be/items/012/" // 商品URL: 必填
+        // ]
+        // );
+        // dd($data);
+        $checksum =  $this->generateChecksum($data);
+        // dd($data);
+        $data = array();
+        $data['checksum'] = $checksum;
+        # 畫面顯示
+        return view('afteeWeb', $data);
+    }
+
+
+
+    /** @test */
+    private function generateChecksum($sessionData)
+    {
+        //設定各data按照key的字⺟順序排列
+        //物件排列
+        foreach ($sessionData['itemInformationList'] as $itemValue) {
+            $item = array(
+                'shop_item_id' => $itemValue['shopItemId'],
+                'item_name' => $itemValue['itemName'],
+                'item_price' => $itemValue['itemPrice'],
+                'item_count' => $itemValue['itemCount'],
+                'item_url' => $itemValue['itemUrl'],
+            );
+            ksort($item);
+            $items[] = $item;
+        }
+
+        // $items[] = array(
+        //     'shop_item_id' => $sessionData['itemInformationList']['shopItemId'],
+        //     'item_name' => $sessionData['itemInformationList']['itemName'],
+        //     'item_price' => $sessionData['itemInformationList']['itemPrice'],
+        //     'item_count' => $sessionData['itemInformationList']['itemCount'],
+        //     'item_url' => $sessionData['itemInformationList']['itemUrl'],
+        // );
+
+
+
+
+        //運費（若無則不須填寫）
+        // if (isset($sessionData['shippingCharge']) && $sessionData['shippingCharge'] > 0) {
+        //     $item = array(
+        //         'shop_item_id' => 'shippingCharge',
+        //         'item_name' => '運費',
+        //         'item_price' => $sessionData['shippingCharge'],
+        //         'item_count' => 1,
+        //     );
+        //     ksort($item);
+        //     $items[] = $item;
+        // }
+        //其他⼿續費（若無則不須填寫）
+        // if (isset($sessionData['otherCharges']) && $sessionData['otherCharges'] > 0) {
+        //     $item = array(
+        //         'shop_item_id' => 'otherCharges',
+        //         'item_name' => '其他⼿續費',
+        //         'item_price' => $sessionData['otherCharges'],
+        //         'item_count' => 1,
+        //     );
+        //     ksort($item);
+        //     $items[] = $item;
+        // }
+
+        //消費者
+        $customer = array(
+            'customer_name' => $sessionData['orderApplicantInformation']['customerName'], // 消費者姓名
+            'zip_code' => $sessionData['orderApplicantInformation']['zipCode'], // 郵遞區號
+            'address' => $sessionData['orderApplicantInformation']['address'], // 地址
+            'email' => $sessionData['orderApplicantInformation']['email'], // 電⼦郵件
+        );
+        ksort($customer);
+
+        // 收件地址
+        $dest_customer = array(
+            'dest_customer_name' => $sessionData['orderSendInformation']['destCustomerName'], //消費者姓名
+            'dest_zip_code' => $sessionData['orderSendInformation']['destZipCode'], // 郵遞區號
+            'dest_address' => $sessionData['orderSendInformation']['destAddress'], // 地址
+            'dest_tel' => $sessionData['orderSendInformation']['destTel'], // 電話號碼
+        );
+        ksort($dest_customer);
+
+        $dest_customers[] = $dest_customer;
+        //⽀付data
+        $settlementdata = array(
+            'amount' => 12460, // 消費⾦額
+            'sales_settled' => "true", // 交易確認
+            'customer' => $customer, // 消費者
+            'dest_customers' => $dest_customers, // 收件地址
+            'items' => $items, // 商品明細
+        );
+        ksort($settlementdata);
+
+        // 複數商品的消費⾦額加總
+        foreach ($items as $item) {
+            $settlementdata['amount'] += $item['item_price'] * $item['item_count'];
+        }
+        // 商家secret key（範例：ATONE_SHOP_SECRET_KEY）⾄於最前⽅
+        $checksum = 'P8Q-6zhQUc117i3s9qURHg' . ',';
+        // 結合付款資訊各要素數值進⾏loop
+        foreach ($settlementdata as $key1 => $value1) {
+            if (is_array($settlementdata[$key1])) {
+                //要素為陣列（array）（包含關聯數組Associative Array） ->收件地址、消費者
+                foreach ($value1 as $key2 => $value2) {
+                    if (is_array($value1[$key2])) {
+                        //要素為item時再⾏loop
+                        foreach ($value2 as $itemKey => $itemValue) {
+                            $checksum .= "$itemValue";
+                        }
+                    } else {
+                        $checksum .= "$value2";
+                    }
+                }
+            } else {
+                $checksum .= "$value1";
+            }
+        }
+
+        //字串經sha256轉為hash後再經Base64進⾏encode
+        $checksum = base64_encode(hash('sha256', $checksum, true));
+        return $checksum;
+    }
 }
