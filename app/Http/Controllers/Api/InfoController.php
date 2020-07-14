@@ -331,19 +331,21 @@ class InfoController extends Controller
     public function testDB()
     {
 
-        $query = DB::table('member')
-            ->first();
-        var_dump($query);
+        // $query = DB::table('member')
+        //     ->first();
+        // var_dump($query);
         // return $query;
     }
 
     /** @test */
     public function getAftee()
     {
-
+        // 完整版
+        // checksum按照19page規格
         $data['itemInformationList'][0] = [
             'shopItemId' => "P19122317", // 店舖商品ID: 必填
             'itemName' => "【豪華車庫房 3h】銀星會員贈送0.5h", // 商品名稱: 必填
+            'itemCategory' => "智慧⼿機", // 商品名稱: 必填
             'itemPrice' => "1099", // 商品單價:必填
             'itemCount' => "1", // 個數: 必填
             'itemUrl' => "https://np-pay.be/items/012/" // 商品URL: 必填
@@ -351,29 +353,30 @@ class InfoController extends Controller
 
         $data['orderApplicantInformation'] = [
             'customerName' => "注⽂太郎", // 消費者姓名
+            'customerFamilyName' => "注⽂", // 消費者姓
+            'customerGivenName' => "太郎", // 消費者名
+            'phoneNumber' => "090-1111-1111", // ⼿機號碼
+            'birthday' => "1990-01-01", // 出⽣年⽉⽇
+            'sexDivision' => "1", // 性別
+            'companyName' => "Net Protections", // 公司名稱
+            'department' => "業務", // 部⾨名稱
             'zipCode' => "108", //郵遞區號
             'address' => "台北市信義區松智路1號11樓", // 地址
             'email' => "np@netprotections.co.jp", // 電⼦郵件
+            'totalPurchaseCount' => "8", // 累計購買次數 ※1
+            'totalPurchaseAmount' => "2160", // 累計購買次數 ※1
         ];
 
         $data['orderSendInformation'] = [
             'destCustomerName' => "銀座太郎", // 消費者姓名
-            'destZipCode' => "108", //郵遞區號
+            'destCompanyName' => "Net Protections", // 公司名稱
+            'destDepartment' => "系統部⾨", // 部⾨名稱
+            'destZipCode' => "123", //郵遞區號
             'destAddress' => "台北市信義區松智路1號11樓", // 地址
-            'destTel' => "09011111111", // 電話號碼
+            'destTel' => "0312341234", // 電話號碼
         ];
 
-
-        // "shop_item_id" => "P19122317", // 店舖商品ID: 必填
-        // "item_name" => "【豪華車庫房 3h】銀星會員贈送0.5h", // 商品名稱: 必填
-        // "item_price" => 1099, // 商品單價:必填
-        // "item_count" => 1, // 個數: 必填
-        // "item_url" => "https://np-pay.be/items/012/" // 商品URL: 必填
-        // ]
-        // );
-        // dd($data);
         $checksum =  $this->generateChecksum($data);
-        // dd($data);
         $data = array();
         $data['checksum'] = $checksum;
         # 畫面顯示
@@ -385,12 +388,14 @@ class InfoController extends Controller
     /** @test */
     private function generateChecksum($sessionData)
     {
+        // checksum按照19page規格
         //設定各data按照key的字⺟順序排列
         //物件排列
         foreach ($sessionData['itemInformationList'] as $itemValue) {
             $item = array(
                 'shop_item_id' => $itemValue['shopItemId'],
                 'item_name' => $itemValue['itemName'],
+                'item_category' => $itemValue['itemCategory'],
                 'item_price' => $itemValue['itemPrice'],
                 'item_count' => $itemValue['itemCount'],
                 'item_url' => $itemValue['itemUrl'],
@@ -399,52 +404,29 @@ class InfoController extends Controller
             $items[] = $item;
         }
 
-        // $items[] = array(
-        //     'shop_item_id' => $sessionData['itemInformationList']['shopItemId'],
-        //     'item_name' => $sessionData['itemInformationList']['itemName'],
-        //     'item_price' => $sessionData['itemInformationList']['itemPrice'],
-        //     'item_count' => $sessionData['itemInformationList']['itemCount'],
-        //     'item_url' => $sessionData['itemInformationList']['itemUrl'],
-        // );
-
-
-
-
-        //運費（若無則不須填寫）
-        // if (isset($sessionData['shippingCharge']) && $sessionData['shippingCharge'] > 0) {
-        //     $item = array(
-        //         'shop_item_id' => 'shippingCharge',
-        //         'item_name' => '運費',
-        //         'item_price' => $sessionData['shippingCharge'],
-        //         'item_count' => 1,
-        //     );
-        //     ksort($item);
-        //     $items[] = $item;
-        // }
-        //其他⼿續費（若無則不須填寫）
-        // if (isset($sessionData['otherCharges']) && $sessionData['otherCharges'] > 0) {
-        //     $item = array(
-        //         'shop_item_id' => 'otherCharges',
-        //         'item_name' => '其他⼿續費',
-        //         'item_price' => $sessionData['otherCharges'],
-        //         'item_count' => 1,
-        //     );
-        //     ksort($item);
-        //     $items[] = $item;
-        // }
-
         //消費者
         $customer = array(
             'customer_name' => $sessionData['orderApplicantInformation']['customerName'], // 消費者姓名
+            'customer_family_name' => $sessionData['orderApplicantInformation']['customerFamilyName'], // 消費者姓
+            'customer_given_name' => $sessionData['orderApplicantInformation']['customerGivenName'], // 消費者名
+            'phone_number' => $sessionData['orderApplicantInformation']['phoneNumber'], // ⼿機號碼
+            'birthday' => $sessionData['orderApplicantInformation']['birthday'], // 出⽣年⽉⽇
+            'sex_division' => $sessionData['orderApplicantInformation']['sexDivision'], // 性別
+            'company_name' => $sessionData['orderApplicantInformation']['companyName'], // 公司名稱
+            'department' => $sessionData['orderApplicantInformation']['department'], // 部⾨名稱
             'zip_code' => $sessionData['orderApplicantInformation']['zipCode'], // 郵遞區號
             'address' => $sessionData['orderApplicantInformation']['address'], // 地址
             'email' => $sessionData['orderApplicantInformation']['email'], // 電⼦郵件
+            'total_purchase_count' => $sessionData['orderApplicantInformation']['totalPurchaseCount'], // 累計購買次數 ※1
+            'total_purchase_amount' => $sessionData['orderApplicantInformation']['totalPurchaseAmount'], // 累計購買次數 ※1
         );
         ksort($customer);
 
         // 收件地址
         $dest_customer = array(
             'dest_customer_name' => $sessionData['orderSendInformation']['destCustomerName'], //消費者姓名
+            'dest_company_name' => $sessionData['orderSendInformation']['destCompanyName'], //公司名稱
+            'dest_department' => $sessionData['orderSendInformation']['destDepartment'], //部⾨名稱
             'dest_zip_code' => $sessionData['orderSendInformation']['destZipCode'], // 郵遞區號
             'dest_address' => $sessionData['orderSendInformation']['destAddress'], // 地址
             'dest_tel' => $sessionData['orderSendInformation']['destTel'], // 電話號碼
@@ -454,8 +436,21 @@ class InfoController extends Controller
         $dest_customers[] = $dest_customer;
         //⽀付data
         $settlementdata = array(
-            'amount' => 12460, // 消費⾦額
+            'amount' => 0, // 消費⾦額
+            'user_no' => "1122700049", // 商家會員ID
+            'description_trans' => "備註", // 店舖交易備註
             'sales_settled' => "true", // 交易確認
+            'customer' => $customer, // 消費者
+            'dest_customers' => $dest_customers, // 收件地址
+            'items' => $items, // 商品明細
+        );
+        ksort($settlementdata);
+
+        $dest_customers[] = $dest_customer;
+        //⽀付data
+        $settlementdata = array(
+            'amount' => 0, // 消費⾦額
+            'user_no' => "1122700049", // 商家會員ID
             'customer' => $customer, // 消費者
             'dest_customers' => $dest_customers, // 收件地址
             'items' => $items, // 商品明細

@@ -21,10 +21,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/area', 'Api\InfoController@getArea');
 // 全家soap訂單建立
 Route::get('/Fami', 'Api\InfoController@getFami');
-// aftee
+// aftee　完整版
 Route::get('/aftee', 'Api\InfoController@getAftee');
-// aftee
-Route::get('/aftee2', 'Api\TestController@getAftee');
+// aftee認證　修改版
+Route::get('/aftee2', 'Api\AfteeController@getAftee');
+// aftee交易確認
+Route::get('/aftee3', 'Api\AfteeController@APIEndPoint');
+// DB紀錄token
+Route::get('/updata', 'Api\AfteeController@toUpdataToken');
 // 取得三段式條碼
 Route::get('/barcode', 'Api\InfoController@getBarcode');
 // 轉成圖檔
