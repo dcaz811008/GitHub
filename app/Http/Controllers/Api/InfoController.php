@@ -462,7 +462,7 @@ class InfoController extends Controller
             $settlementdata['amount'] += $item['item_price'] * $item['item_count'];
         }
         // 商家secret key（範例：ATONE_SHOP_SECRET_KEY）⾄於最前⽅
-        $checksum = 'P8Q-6zhQUc117i3s9qURHg' . ',';
+        $checksum = '' . ',';// secret key
         // 結合付款資訊各要素數值進⾏loop
         foreach ($settlementdata as $key1 => $value1) {
             if (is_array($settlementdata[$key1])) {

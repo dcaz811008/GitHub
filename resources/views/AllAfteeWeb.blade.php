@@ -116,7 +116,8 @@
 
     Aftee.config({
         pre_token: "",
-        pub_key: "-R1ow7TE0aScN_Xx7osFyg",
+        // pub_key
+        pub_key: "",
         payment: data,
         // 認證完成同時、亦或會員註冊完成同時呼叫
         authenticated: function(authentication_token, user_no) {

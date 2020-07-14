@@ -257,7 +257,7 @@ class AfteeController extends Controller
         }
 
         // 商家secret key（範例：ATONE_SHOP_SECRET_KEY）⾄於最前⽅
-        $checksum = 'P8Q-6zhQUc117i3s9qURHg' . ',';
+        $checksum = '' . ','; // secret key
         // 結合付款資訊各要素數值進⾏loop
         foreach ($settlementdata as $key1 => $value1) {
             if (is_array($settlementdata[$key1])) {
@@ -298,7 +298,7 @@ class AfteeController extends Controller
         // dd($param);
 
         // secret key
-        $key = base64_encode("P8Q-6zhQUc117i3s9qURHg");
+        $key = base64_encode(""); // secret key
         $headers  =  array(
             "Content-type: application/json",
             "Authorization: basic " . $key,
