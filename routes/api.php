@@ -39,6 +39,8 @@ Route::post('/soap', 'Api\InfoController@soapTest');
 Route::post('/push', 'Api\InfoController@doPush');
 // 寄信測試
 Route::post('/smdmail', 'Api\InfoController@testMail');
+// 爬蟲測試
+Route::get('/guzzle', 'Api\ReptileController@index');
 
 Route::get('/test', 'Api\InfoController@testDB');
 // 中介層過濾器
