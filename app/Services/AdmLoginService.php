@@ -7,18 +7,21 @@ use App\Services\Service;
 use App\Models\AdmUser;
 use App\Models\AdmRole;
 use App\Models\AdmMenu;
+use App\Models\Announcement;
 
 class AdmLoginService extends Service
 {
     private $AdmUser;
     private $AdmRole;
     private $AdmMenu;
+    private $Announcement;
 
     public function __construct()
     {
         $this->AdmUser = new AdmUser();
         $this->AdmRole = new AdmRole();
         $this->AdmMenu = new AdmMenu();
+        $this->Announcement = new Announcement();
     }
 
     # 判斷 adm 登入
@@ -85,5 +88,19 @@ class AdmLoginService extends Service
         $admLogin->subMenu = $admSubMenu;
 
         return $admLogin;
+    }
+
+    /**
+     * 網頁列表 function
+     *
+     * @return void
+     */
+    public function admWebList()
+    {
+        $query = $this->Announcement
+            ->where('status', '!=', 2)
+            ->get();
+
+        return $query;
     }
 }

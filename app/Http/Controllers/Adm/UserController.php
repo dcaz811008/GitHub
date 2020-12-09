@@ -87,4 +87,17 @@ class UserController extends AdmController
         $errorMsgObj = $this->setErrorMsgObj('登入失敗');
         return back()->withInput()->withErrors($errorMsgObj->all());
     }
+
+    /**
+     * 網頁列表 function
+     *
+     * @return void
+     */
+    public function active()
+    {
+        // $this->dataAry['webList'] = $this->AdmLoginService->admWebList();
+    $this->data['content'] = null;
+        # 畫面
+        return view('ckeditor');
+    }
 }

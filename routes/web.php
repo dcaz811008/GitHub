@@ -39,6 +39,8 @@ Route::get('/home', function () {
     return view('/site/layouts/home');
 });
 
+Route::get('/editorWeb', 'Adm\UserController@active');
+
 # vendor web
 Route::domain(env('APP_DOMAIN_VENDOR'))->group(function()
 {
