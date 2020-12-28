@@ -29,6 +29,12 @@ class UserController extends AdmController
         return view('vendorWeb');
     }
 
+    public function postMessage(Request $request)
+    {
+        # 畫面顯示
+        return view('recevie');
+    }
+
     # 登入 流程
     public function login()
     {

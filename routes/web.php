@@ -33,6 +33,10 @@ Route::get('/test3', function () {
 Route::get('/test4', function () {
     return view('test4');
 });
+// load
+Route::get('/test5', function () {
+    return view('test5');
+});
 
 
 Route::get('/home', function () {

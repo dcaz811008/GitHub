@@ -25,6 +25,7 @@ Route::middleware(['needLogin'])
 ->group(function () {
     # 主畫面
     Route::get('/', 'Adm\UserController@index');
-
+    
 });
+Route::get('/postMessage', 'Adm\UserController@postMessage');
 
